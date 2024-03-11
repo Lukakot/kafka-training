@@ -5,7 +5,6 @@ import com.launchdarkly.eventsource.EventHandler;
 import com.launchdarkly.eventsource.EventSource;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.common.record.CompressionType;
 
 import java.net.URI;
 import java.util.Properties;
@@ -45,7 +44,7 @@ public class WikimediaChangesProducer {
         //more efficient producer
         props.put(ProducerConfig.LINGER_MS_CONFIG, "20");
         props.setProperty(ProducerConfig.BATCH_SIZE_CONFIG, Integer.toString(32*1024));
-        props.put(ProducerConfig.COMPRESSION_TYPE_CONFIG, CompressionType.SNAPPY);
+        props.put(ProducerConfig.COMPRESSION_TYPE_CONFIG, "snappy");
         return props;
     }
 }
