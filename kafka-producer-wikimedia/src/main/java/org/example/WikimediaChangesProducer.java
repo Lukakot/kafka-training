@@ -4,6 +4,8 @@ import com.launchdarkly.eventsource.EventHandler;
 
 import com.launchdarkly.eventsource.EventSource;
 import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.record.CompressionType;
 
 import java.net.URI;
 import java.util.Properties;
@@ -39,6 +41,11 @@ public class WikimediaChangesProducer {
         props.put("sasl.jaas.config", "org.apache.kafka.common.security.scram.ScramLoginModule required username=\"Y29uY2lzZS1uYXJ3aGFsLTU1MDMkW03-mxy6pl_Gybo1QXxTFfoH0XF7lwtgbx8\" password=\"OTA0M2Y1YmYtMWY3My00YmMwLWE3ZjYtZDJhNWEzZTU3YTgy\";");
         props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+
+        //more efficient producer
+        props.put(ProducerConfig.LINGER_MS_CONFIG, "20");
+        props.setProperty(ProducerConfig.BATCH_SIZE_CONFIG, Integer.toString(32*1024));
+        props.put(ProducerConfig.COMPRESSION_TYPE_CONFIG, CompressionType.SNAPPY);
         return props;
     }
 }
